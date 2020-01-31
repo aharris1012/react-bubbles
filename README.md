@@ -36,7 +36,7 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 -Authentication
 -Secure HTTP 
 
-- [ ] Describe how web servers work.
+- [ ] Describe how web servers work
 
 -A web server stores copies of data, including web pages to be served to clients. A client will use an IP address or URL to send a request to the server located at that address. The server listens requests and sends the data back to the client.
 
