@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
-import {useState} from "react";
+import React, { useState } from "react";
+import axios from 'axios';
+
 
 const Login = (props) => {
  
@@ -23,38 +23,28 @@ const Login = (props) => {
     })
   };
 
-
-
-
-
-
-
   return (
     <>
       <h1>Welcome to the Bubble App!</h1>
-     <form onSubmit={handleSubmit}>
-       <input 
-       type="text"
-       name="username"
-       placeholder="Your username"
-       value={login.username}
-       onChange={handleChange}
-       />
-
-<input 
-       type="text"
-       name="password"
-       placeholder="Your password"
-       value={login.password}
-       onChange={handleChange}
-       />
-       <button className="login-btn">Log in</button>
-
-
-
-     </form>
+     
+      <form onSubmit={handleSubmit}>
+        <input 
+        type='text'
+        name='username'
+        placeholder='Username'
+        value={login.username}
+        onChange={handleChange}
+        />
+        <input 
+        type='password'
+        name='password'
+        placeholder='Password'
+        value={login.password}
+        onChange={handleChange}
+        />
+        <button className="login-btn"type='submit'>Log In</button>
+      </form>
     </>
   );
 };
-
 export default Login;
