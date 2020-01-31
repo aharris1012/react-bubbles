@@ -1,50 +1,45 @@
-import React, { useState } from "react";
-import axios from 'axios';
-
+import React from "react";
+import { useForm } from 'react-hook-form';
+import axiosWithAuth from './axiosWithAuth/axiosWithAuth';
+import PrivateRoute from "./PrivateRoute";
 
 const Login = (props) => {
- 
-  const [login, setLogin] = useState({ username: '', password: '' });
-
-  const handleChange = event => {
-    setLogin({...login, [event.target.name]: event.target.value})
+  const { register, handleSubmit, reset } = useForm();
+  const onSubmit = (data) => {
+    reset();
+    axiosWithAuth()
+      .post('/login', data)
+      .then((res) => {
+        localStorage.setItem('token', res.data.payload);
+        props.history.push(`/private`);
+      })
+      .catch((err) => 
+        console.log('Error', err));
+    };
+    return (
+      <>
+        <h1>Welcome to the Bubble App!</h1>
+        <form onSubmit={handleSubmit(onsubmit)}>
+          <input
+            type='text'
+            name='username'
+            placeholder='username'
+            ref={register}
+          />
+          <br></br>
+          <input
+            type='password'
+            name='password'
+            placeholder='password'
+            ref={register}
+          />
+          <br></br>
+          <input
+            type='submit'
+            value='Log In'
+          />
+        </form>
+      </>
+    );
   };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axios
-    .post('http://localhost:5000/api/login', login)
-    .then(response => {
-      console.log(console.log('login response', response.data));
-      localStorage.setItem('token', response.data.payload);
-      props.history.push('/bubble-page')
-    })
-    .catch(error => {console.log('Login Error', error)
-    })
-  };
-
-  return (
-    <>
-      <h1>Welcome to the Bubble App!</h1>
-     
-      <form onSubmit={handleSubmit}>
-        <input 
-        type='text'
-        name='username'
-        placeholder='Username'
-        value={login.username}
-        onChange={handleChange}
-        />
-        <input 
-        type='password'
-        name='password'
-        placeholder='Password'
-        value={login.password}
-        onChange={handleChange}
-        />
-        <button className="login-btn"type='submit'>Log In</button>
-      </form>
-    </>
-  );
-};
-export default Login;
+  export default Login;
