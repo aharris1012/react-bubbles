@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosWithAuth from "./axiosWithAuth/axiosWithAuth";
+import {axiosWithAuth} from "./axiosWithAuth/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -10,32 +10,37 @@ const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [newColor, setNewColor] = useState({
+    color: '',
+    code: ''
+  })
 
   const editColor = color => {
+    console.log(color);
     setEditing(true);
     setColorToEdit(color);
   };
 
   const saveEdit = e => {
     e.preventDefault();
-    axiosWithAuth()
-    .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
-    .then(response => {
-      console.log('put response', response.data)
-      setEditing(false);
-      axiosWithAuth()
-      updateColors();
-    })
-    .catch(error => { console.log('Put Error', error) })
+    // Make a put request to save your updated color
+    // think about where will you get the id from...
+    // where is is saved right now?
+    console.log(colorToEdit);
+    axiosWithAuth().put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => {
+        console.log(res);
+        updateColors(colors.map(element => element.id === res.data.id ? colorToEdit : element));
+      })
   };
 
   const deleteColor = color => {
-    axiosWithAuth()
-    .delete(`http://localhost:5000/api/colors/${color.id}`)
-    .then(response => {
-      console.log('delete response', response.data);
-      updateColors();
-    })
+    // make a delete request to delete this color
+    axiosWithAuth().delete(`http://localhost:5000/api/colors/${color.id}`)
+      .then(res => {
+        console.log(res);
+        updateColors(colors.filter(element => element.id !== res.data));
+      })
   };
 
   return (
@@ -96,5 +101,4 @@ const ColorList = ({ colors, updateColors }) => {
     </div>
   );
 };
-
 export default ColorList;
